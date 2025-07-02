@@ -1,0 +1,9 @@
+streamlit
+pandas
+duckdb
+langchain
+langchain-community
+openai
+python-dotenv
+mysql-connector-python
+chardet
