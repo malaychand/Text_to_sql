@@ -56,14 +56,6 @@ This Streamlit-based application allows users to query data from various sources
 
 ---
 
-### 📝 6. Natural Language to SQL
-> Example of how a question gets converted to SQL and executed.
-<p align="center">
-  <img src="ScreenShot/Screenshot_6.png" alt="Query Execution" width="700"/>
-</p>
-
----
-
 ## 🛠️ How It Works
 
 1. Connect to a **MySQL** database or upload **CSV files**.
