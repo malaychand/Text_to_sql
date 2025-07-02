@@ -3,5 +3,7 @@ pandas
 duckdb
 langchain
 langchain-community
-transformers
-torch
+openai
+python-dotenv
+mysql-connector-python
+chardet
