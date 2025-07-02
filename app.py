@@ -7,8 +7,8 @@ from csv_utils import detect_encoding, detect_delimiter
 from prompt_builder import build_prompt
 from llm_to_sql import generate_sql_from_prompt
 
-st.set_page_config(page_title="📊 Unified CSV & MySQL Viewer", layout="wide")
-st.title("🔗 CSV & MySQL Table Annotator")
+st.set_page_config(page_title="🧠 Text-to-SQL Tool", layout="wide")
+st.title("🛠️ Natural Language to SQL Converter")
 
 # Session state initialization
 for key in ["uploaded_data", "file_prompts", "column_descriptions", "dataframes", "table_descriptions", "delimiters"]:
@@ -18,10 +18,10 @@ for key in ["uploaded_data", "file_prompts", "column_descriptions", "dataframes"
 # ===============================#
 # 📤 1. CSV Upload & Annotation
 # ===============================#
-st.header("📁 Upload CSV Files")
+st.subheader("📁 Upload CSV Files")
 with st.form(key="csv_upload_form"):
-    uploaded_files = st.file_uploader("Upload CSV files", type="csv", accept_multiple_files=True)
-    submit = st.form_submit_button("📤 Upload These Files")
+    uploaded_files = st.file_uploader("Choose CSV files", type="csv", accept_multiple_files=True)
+    submit = st.form_submit_button("Upload")
 
 if submit and uploaded_files:
     for file in uploaded_files:
@@ -48,7 +48,7 @@ if submit and uploaded_files:
 # ===============================#
 # 🔌 2. MySQL Table Connector
 # ===============================#
-st.header("🧩 Connect to MySQL Database")
+st.subheader("Connect to MySQL Database")
 
 with st.expander("Enter MySQL Credentials"):
     host = st.text_input("Host", value="localhost")
@@ -98,7 +98,7 @@ if "schema_info" in st.session_state:
 # ===============================#
 # 🧾 3. Display + Annotation
 # ===============================#
-st.header("📊 Uploaded Tables")
+st.subheader("📊 Uploaded Tables")
 
 # Combine CSV and MySQL tables
 all_tables = {**st.session_state.uploaded_data, **st.session_state.dataframes}
@@ -110,7 +110,7 @@ if all_tables:
             if table_name in st.session_state.delimiters:
                 st.markdown(f"**Delimiter used:** `{st.session_state.delimiters[table_name]}`")
 
-            st.dataframe(df)
+            st.dataframe(df, height=200)
 
             # Download button
             csv_download = df.to_csv(index=False).encode("utf-8")
@@ -118,7 +118,7 @@ if all_tables:
 
             # Table-level description
             default_table_desc = st.session_state.table_descriptions.get(table_name, st.session_state.file_prompts.get(table_name, ""))
-            table_desc = st.text_area(f"📝 Describe `{table_name}` table:", value=default_table_desc, key=f"desc_{table_name}")
+            table_desc = st.text_area(f"📝 Describe `{table_name}` table:", value=default_table_desc, key=f"desc_{table_name},")
             st.session_state.table_descriptions[table_name] = table_desc
 
             # Column-level descriptions
@@ -131,13 +131,11 @@ if all_tables:
                 col_desc = st.text_input(f"• {col}:", value=default_col_desc, key=f"{table_name}_{col}_desc")
                 st.session_state.column_descriptions[table_name][col] = col_desc
 st.markdown("---")
-st.markdown(" ")
-
 
 # ===============================#
 # 🔍 4. Natural Language → SQL → DuckDB Execution
 # ===============================#
-st.header("🧠 Ask Questions in Natural Language")
+st.subheader("Ask Questions in Natural Language")
 
 query_input = st.text_input("🔍 Your Question:", placeholder="e.g., Show all rows where age > 50")
 
@@ -187,7 +185,7 @@ if query_input:
 # ===============================#
 # 🧮 5. Run Custom SQL Queries (Manual)
 # ===============================#
-st.header("🧮 Run Custom SQL Queries")
+st.subheader("🧮 Run Custom SQL Queries")
 
 custom_sql = st.text_area("✍️ Enter your SQL query below:", height=100, placeholder="e.g., SELECT * FROM your_table WHERE age > 30")
 
